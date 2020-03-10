@@ -1,6 +1,8 @@
 package XML;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
+
+import org.json.*;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
@@ -10,14 +12,57 @@ import java.io.File;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Scanner;
 public class XMLReader {
-
+	
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		JSONreader();
+	}
+	
+	public static void JSONreader() {
 		try {
-			String url = "http://dictionaryapi.com/api/v1/references/collegiate/xml/penis?key=633cbc13-6db6-4cc9-ae43-47b7557f30b0";
+			Scanner sc = new Scanner(System.in);
+			String w = sc.next();
+			String url = "https://od-api.oxforddictionaries.com/api/v2/entries/en-gb/"+w;
 			URL obj = new URL(url);
 			HttpURLConnection conn = (HttpURLConnection) obj.openConnection();
+			conn.setRequestProperty("app_id", "b5b07bc0");
+			conn.setRequestProperty("app_key","6ecb5b24bb4509a59f2ed058f4b5455b");
+			BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+			String inputLine;
+			StringBuffer content = new StringBuffer();
+			while((inputLine=in.readLine())!=null) {
+				content.append(inputLine);
+			}
+			in.close();
+			
+			//System.out.println(content.toString());
+			JSONObject parser = new JSONObject(content.toString());
+			try {
+				JSONArray definition = parser.getJSONArray("results").getJSONObject(0).getJSONArray("lexicalEntries").getJSONObject(0).getJSONArray("entries").getJSONObject(0).getJSONArray("senses").getJSONObject(0).getJSONArray("definitions");
+				System.out.println(definition.get(0));
+			}catch(JSONException j) {
+				System.out.println("Defintion unavailible (unused word)");
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	
+	public static void xmlreader() {
+		// TODO Auto-generated method stub
+		Scanner sc = new Scanner(System.in);
+		String prompt = sc.next();
+		try {
+			String url = "http://dictionaryapi.com/api/v1/references/collegiate/xml/"+prompt+"?key=633cbc13-6db6-4cc9-ae43-47b7557f30b0";
+			//String url = "https://od-api.oxforddictionaries.com/api/v2/entries/en-gb/clock";
+			URL obj = new URL(url);
+			HttpURLConnection conn = (HttpURLConnection) obj.openConnection();
+			//conn.setRequestProperty("app_id", "b5b07bc0");
+			//conn.setRequestProperty("app_key","6ecb5b24bb4509a59f2ed058f4b5455b");
+			//System.out.println(conn.getHeaderField("app_key"));
 			BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 			
 			String inputLine;
@@ -53,7 +98,7 @@ public class XMLReader {
 				System.out.println("\nCurrent Element :" + nNode.getNodeName());
 						
 				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-
+					
 					Element eElement = (Element) nNode;
 					System.out.println(eElement.getAttribute("id"));
 					System.out.println("Defintion: "+eElement.getElementsByTagName("dt").item(0).getTextContent());
