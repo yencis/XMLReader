@@ -19,6 +19,8 @@ public class XMLReader {
 		JSONreader();
 	}
 	
+	
+	//Comment this function out
 	public static void JSONreader() {
 		try {
 			Scanner sc = new Scanner(System.in);
@@ -26,8 +28,8 @@ public class XMLReader {
 			String url = "https://od-api.oxforddictionaries.com/api/v2/entries/en-gb/"+w;
 			URL obj = new URL(url);
 			HttpURLConnection conn = (HttpURLConnection) obj.openConnection();
-			conn.setRequestProperty("app_id", "b5b07bc0");
-			conn.setRequestProperty("app_key","6ecb5b24bb4509a59f2ed058f4b5455b");
+			conn.setRequestProperty("app_id", "YOUR APP ID HERE");
+			conn.setRequestProperty("app_key","YOUR APP KEY HERE");
 			BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 			String inputLine;
 			StringBuffer content = new StringBuffer();
@@ -56,12 +58,12 @@ public class XMLReader {
 		Scanner sc = new Scanner(System.in);
 		String prompt = sc.next();
 		try {
-			String url = "http://dictionaryapi.com/api/v1/references/collegiate/xml/"+prompt+"?key=633cbc13-6db6-4cc9-ae43-47b7557f30b0";
+			String url = "http://dictionaryapi.com/api/v1/references/collegiate/xml/"+prompt+"?key=key for dictionaryapi.com";
 			//String url = "https://od-api.oxforddictionaries.com/api/v2/entries/en-gb/clock";
 			URL obj = new URL(url);
 			HttpURLConnection conn = (HttpURLConnection) obj.openConnection();
-			//conn.setRequestProperty("app_id", "b5b07bc0");
-			//conn.setRequestProperty("app_key","6ecb5b24bb4509a59f2ed058f4b5455b");
+			//conn.setRequestProperty("app_id", "YOUR ID");
+			//conn.setRequestProperty("app_key","YOUR KEY");
 			//System.out.println(conn.getHeaderField("app_key"));
 			BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 			
